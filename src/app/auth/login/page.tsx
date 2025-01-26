@@ -1,6 +1,7 @@
 
 import { LoginForm } from "@/components/auth/LoginForm";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "CashTracker - Iniciar sesión",
@@ -14,6 +15,10 @@ export default function LoginPage() {
       <p className="text-3xl font-bold">y controla tu <span className="text-amber-500">fnanzas</span></p>
 
       <LoginForm />
+
+      <nav className="mt-10 flex flex-col space-y-4">
+        <Link href={'/auth/register'} className="text-center text-gray-500">¿No tienes cuenta? Crea una</Link>
+      </nav>
     </>
   );
 }
