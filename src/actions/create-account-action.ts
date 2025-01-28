@@ -2,7 +2,11 @@
 
 import { RegisterSchema } from '@/schemas';
 
-export async function register(formData: FormData) {
+type ActionStateType = {
+  errors: string[];
+};
+
+export async function register(prevState: ActionStateType, formData: FormData) {
   const registerData = {
     email: formData.get('email'),
     name: formData.get('name'),
@@ -11,10 +15,9 @@ export async function register(formData: FormData) {
   };
 
   const register = RegisterSchema.safeParse(registerData);
-  const errors = register.error?.errors.map((error) => error.message);
-
-  if(!register.success) {
-    return {}
+  if (!register.success) {
+    const errors = register.error.errors.map((error) => error.message);
+    return { errors };
   }
 
   const url = `${process.env.API_URL}/auth/register`;
@@ -27,13 +30,15 @@ export async function register(formData: FormData) {
       email: register.data.email,
       name: register.data.name,
       password: register.data.password,
-      passwordConfirmation: register.data.password
+      passwordConfirmation: register.data.password,
     }),
-  })
+  });
 
   const json = await req.json();
 
   console.log(json);
 
-
+  return {
+    errors: [],
+  };
 }
