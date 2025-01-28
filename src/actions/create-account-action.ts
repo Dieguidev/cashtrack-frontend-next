@@ -1,9 +1,10 @@
 'use server';
 
-import { RegisterSchema } from '@/schemas';
+import { RegisterSchema, SuccessSchema } from '@/schemas';
 
 type ActionStateType = {
   errors: string[];
+  success: string;
 };
 
 export async function register(prevState: ActionStateType, formData: FormData) {
@@ -17,7 +18,10 @@ export async function register(prevState: ActionStateType, formData: FormData) {
   const register = RegisterSchema.safeParse(registerData);
   if (!register.success) {
     const errors = register.error.errors.map((error) => error.message);
-    return { errors };
+    return {
+      errors,
+      success: prevState.success,
+    };
   }
 
   const url = `${process.env.API_URL}/auth/register`;
@@ -36,9 +40,12 @@ export async function register(prevState: ActionStateType, formData: FormData) {
 
   const json = await req.json();
 
-  console.log(json);
+  const success = SuccessSchema.parse(json);
+
+  console.log(success);
 
   return {
-    errors: [],
+    errors: prevState.errors,
+    success: 'cuenta creada correctamente',
   };
 }
