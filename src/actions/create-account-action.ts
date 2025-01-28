@@ -1,6 +1,6 @@
 'use server';
 
-import { RegisterSchema, SuccessSchema } from '@/schemas';
+import { ErrorResponseSchema, RegisterSchema, SuccessSchema } from '@/schemas';
 
 type ActionStateType = {
   errors: string[];
@@ -40,12 +40,19 @@ export async function register(prevState: ActionStateType, formData: FormData) {
 
   const json = await req.json();
 
-  const success = SuccessSchema.parse(json);
+  if(req.status === 409) {
+    // const {error} = ErrorResponseSchema.parse(json);
+    ErrorResponseSchema.parse(json);
+    return {
+      errors: ['El email ya está en uso'],
+      success: '',
+    };
+  }
 
-  console.log(success);
+  SuccessSchema.parse(json);
 
   return {
-    errors: prevState.errors,
+    errors: [],
     success: 'cuenta creada correctamente',
   };
 }

@@ -25,5 +25,8 @@ export const SuccessSchema = z.object({
     confirmed: z.boolean(),
     budgets: z.array(z.unknown())
   })
+})
 
+export const ErrorResponseSchema = z.object({
+  error: z.string()
 })
