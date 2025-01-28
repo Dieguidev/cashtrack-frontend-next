@@ -2,7 +2,7 @@
 
 import { ErrorResponseSchema, RegisterSchema, SuccessSchema } from '@/schemas';
 
-type ActionStateType = {
+export type ActionStateType = {
   errors: string[];
   success: string;
 };

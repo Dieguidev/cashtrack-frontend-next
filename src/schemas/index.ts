@@ -28,5 +28,5 @@ export const SuccessSchema = z.object({
 })
 
 export const ErrorResponseSchema = z.object({
-  error: z.string()
+  errors: z.array(z.string())
 })
