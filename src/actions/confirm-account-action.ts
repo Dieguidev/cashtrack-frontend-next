@@ -10,7 +10,7 @@ export type ActionStateType = {
 
 export async function confirmAccount(
   token: string,
-  prevState: ActionStateType
+  // prevState: ActionStateType
 ) {
 
   const confirmToken = TokenSchema.safeParse(token);
@@ -33,6 +33,13 @@ export async function confirmAccount(
   });
 
   const json = await req.json();
+
+  if (req.status === 429) {
+    return {
+      errors: ['Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.'],
+      success: '',
+    };
+  }
 
   if(!req.ok) {
     // const {error} = ErrorResponseSchema.parse(json);

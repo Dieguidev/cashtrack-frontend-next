@@ -3,8 +3,9 @@
 import { confirmAccount } from "@/actions/confirm-account-action";
 import { PinInput, PinInputField } from "@chakra-ui/pin-input";
 import { useActionState, useEffect, useState } from "react";
-import { ErrorMessage } from "../ui/ErrorMessage";
+
 import { SuccessMessage } from "../ui/SuccessMessage";
+import { toast } from "react-toastify";
 
 export const ConfirmAccountFrom = () => {
   const [isComplete, setIsComplete] = useState(false)
@@ -22,7 +23,17 @@ export const ConfirmAccountFrom = () => {
     }
   }, [isComplete])
 
+  useEffect(() => {
+    if(state.errors) {
+      state.errors.forEach(error => {
+        toast.error(error)
+      })
+    }
+  }, [state])
+
+
   const handleChange = (token: string) => {
+    setIsComplete(false)
     setToken(token)
   }
 
@@ -32,7 +43,7 @@ export const ConfirmAccountFrom = () => {
 
   return (
     <>
-      {state.errors.map((error, index) => <ErrorMessage key={index}>{error}</ErrorMessage>)}
+
       {state.success && <SuccessMessage>{state.success}</SuccessMessage>}
       <div className="flex justify-center gap-5 my-10">
 
