@@ -1,11 +1,11 @@
 'use server';
 
-import { ErrorResponseSchema, LoginSchema, SuccessSchema } from "@/schemas";
-import { cookies } from "next/headers";
+import { ErrorResponseSchema, LoginSchema} from '@/schemas';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export type ActionStateType = {
   errors: string[];
-
 };
 
 export async function login(prevState: ActionStateType, formData: FormData) {
@@ -19,7 +19,6 @@ export async function login(prevState: ActionStateType, formData: FormData) {
     const errors = login.error.errors.map((error) => error.message);
     return {
       errors,
-
     };
   }
 
@@ -37,32 +36,33 @@ export async function login(prevState: ActionStateType, formData: FormData) {
 
   const json = await req.json();
 
-  if(req.status === 401) {
+  if (req.status === 401) {
     ErrorResponseSchema.parse(json);
     return {
       errors: ['Email o password incorrectos'],
-
     };
   }
 
-  if(req.status === 429) {
+  if (req.status === 429) {
     return {
-      errors: ['Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.'],
-
+      errors: [
+        'Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.',
+      ],
     };
   }
 
   const authCookie = await cookies();
 
   authCookie.set({
-    name: "CASHTRACKR_TOKEN",
+    name: 'CASHTRACKR_TOKEN',
     value: json.token,
     httpOnly: true,
-    path: "/",
-});
+    path: '/',
+  });
 
-  return {
-    errors: [],
+  redirect('/admin');
 
-  };
+  // return {
+  //   errors: [],
+  // };
 }
