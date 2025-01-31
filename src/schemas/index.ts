@@ -47,3 +47,6 @@ export const LoginSchema = z.object({
     .email({ message: 'Email no válido' }),
   password: z.string().min(1, { message: 'El Password no puede ir vacio' }),
 });
+
+
+export type User = z.infer<typeof SuccessSchema>['user'];
