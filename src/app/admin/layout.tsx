@@ -1,4 +1,5 @@
 import { verifySession } from "@/auth/dal";
+import { AdminMenu } from "@/components/admin/AdminMenu";
 import { Logo } from "@/components/ui/Logo";
 import { ToastNotification } from "@/components/ui/ToastNotification";
 import Link from "next/link";
@@ -9,7 +10,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }>) {
 
-  await verifySession();
+  const { user } = await verifySession();
 
   return (
     <>
@@ -17,9 +18,11 @@ export default async function AdminLayout({
         <div className='max-w-5xl mx-auto flex flex-col lg:flex-row justify-between items-center'>
           <div className='w-96'>
             <Link href={'/admin'}>
-                <Logo />
+              <Logo />
             </Link>
           </div>
+
+          <AdminMenu user= {user}/>
         </div>
       </header>
       <section className='max-w-5xl mx-auto mt-20 p-3 py-10'>
