@@ -1,10 +1,9 @@
 'use client';
 
 
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { ActionStateType, login } from "@/actions/login-user-action";
-import { useActionState, useState } from "react";
-import { ErrorMessage } from "../ui/ErrorMessage";
-import { SuccessMessage } from "../ui/SuccessMessage";
 
 export const LoginForm = () => {
 
@@ -16,7 +15,7 @@ export const LoginForm = () => {
   const [state, dispatch] = useActionState(async (prevSatate: ActionStateType, form: FormData) => {
     const result = await login(prevSatate, form)
 
-    if (result.success) {
+    if (result.errors.length === 0) {
       setFormData({
         email: '',
         password: '',
@@ -25,9 +24,16 @@ export const LoginForm = () => {
     return result
   }, {
     errors: [],
-    success: '',
-
   })
+
+  useEffect(() => {
+    if (state.errors) {
+      state.errors.forEach(error =>{
+        toast.error(error)
+      })
+    }
+  }, [state])
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,9 +46,9 @@ return (
       noValidate
       action={dispatch}
     >
-      {state.errors.map((error, index) => <ErrorMessage key={index}>{error}</ErrorMessage>)}
 
-            {state.success && <SuccessMessage>Usuario logueado correctamente</SuccessMessage>}
+
+
       <div className="flex flex-col gap-2">
         <label
           className="font-bold text-2xl"

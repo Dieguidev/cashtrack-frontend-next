@@ -27,6 +27,10 @@ export const SuccessSchema = z.object({
   }),
 });
 
+export const LoginResponseSchema = SuccessSchema.merge(z.object({
+  token: z.string(),
+}));
+
 export const ErrorResponseSchema = z.object({
   error: z.string(),
 });

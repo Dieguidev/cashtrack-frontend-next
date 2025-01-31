@@ -1,10 +1,11 @@
 'use server';
 
 import { ErrorResponseSchema, LoginSchema, SuccessSchema } from "@/schemas";
+import { cookies } from "next/headers";
 
 export type ActionStateType = {
   errors: string[];
-  success: string;
+
 };
 
 export async function login(prevState: ActionStateType, formData: FormData) {
@@ -18,7 +19,7 @@ export async function login(prevState: ActionStateType, formData: FormData) {
     const errors = login.error.errors.map((error) => error.message);
     return {
       errors,
-      success: prevState.success,
+
     };
   }
 
@@ -40,21 +41,28 @@ export async function login(prevState: ActionStateType, formData: FormData) {
     ErrorResponseSchema.parse(json);
     return {
       errors: ['Email o password incorrectos'],
-      success: '',
+
     };
   }
 
   if(req.status === 429) {
     return {
       errors: ['Demasiadas solicitudes. Por favor, inténtelo de nuevo más tarde.'],
-      success: '',
+
     };
   }
 
-  SuccessSchema.parse(json);
+  const authCookie = await cookies();
+
+  authCookie.set({
+    name: "CASHTRACKR_TOKEN",
+    value: json.token,
+    httpOnly: true,
+    path: "/",
+});
 
   return {
     errors: [],
-    success: 'Login correcto',
+
   };
 }
