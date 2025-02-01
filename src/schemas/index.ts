@@ -58,3 +58,13 @@ export const LoginSchema = z.object({
 });
 
 export type User = z.infer<typeof SuccessSchema>['user'];
+
+
+export const ResetPasswordSchema = z.object({
+  password: z.string()
+          .min(8, {message: 'El Password debe ser de al menos 8 caracteres'}),
+  password_confirmation: z.string()
+}).refine((data) => data.password === data.password_confirmation, {
+  message: "Los Passwords no son iguales",
+  path: ["password_confirmation"]
+});

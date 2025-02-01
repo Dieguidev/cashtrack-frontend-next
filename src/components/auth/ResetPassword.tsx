@@ -1,10 +1,31 @@
-import React from 'react'
+
+import { resetForgotPassword } from '@/actions/reset-forgot-password-action';
+import { useActionState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export const ResetPassword = () => {
+
+  const [state, dispatch] =  useActionState(resetForgotPassword, {
+    errors: [],
+    success: ''
+  })
+
+  useEffect(() => {
+      if (state.errors) {
+        state.errors.forEach(error => {
+          toast.error(error)
+        })
+      }
+      if (state.success) {
+        toast.success(state.success)
+      }
+    }, [state])
+
   return (
     <form
       className=" mt-14 space-y-5"
       noValidate
+      action={dispatch}
     >
       <div className="flex flex-col gap-5">
         <label
