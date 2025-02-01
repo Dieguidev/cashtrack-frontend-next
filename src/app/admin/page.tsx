@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { BudgetsAPIResponseSchema } from "@/schemas";
 import { getTokenFromCookies } from "@/auth/token";
 import { formatCurrency, formatDate } from "@/utils";
+import { BudgetMenu } from "@/components/budget/BudgetMenu";
 
 export const metadata: Metadata = {
   title: 'CahsTrackr - Panel de Administración',
@@ -75,7 +76,9 @@ export default async function AdminPage() {
                   </div>
                 </div>
                 <div className="flex shrink-0 items-center gap-x-6">
-
+                  <BudgetMenu
+                    budgetId={budget.id}
+                  />
                 </div>
               </li>
             ))}
