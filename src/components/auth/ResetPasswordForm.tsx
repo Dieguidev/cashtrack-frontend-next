@@ -3,23 +3,28 @@ import { resetForgotPassword } from '@/actions/reset-forgot-password-action';
 import { useActionState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-export const ResetPassword = () => {
 
-  const [state, dispatch] =  useActionState(resetForgotPassword, {
+type ResetPasswordFormProps = {
+  token: string
+}
+
+export const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
+  const resetForgotPasswordWithToken = resetForgotPassword.bind(null, token)
+  const [state, dispatch] = useActionState(resetForgotPasswordWithToken, {
     errors: [],
     success: ''
   })
 
   useEffect(() => {
-      if (state.errors) {
-        state.errors.forEach(error => {
-          toast.error(error)
-        })
-      }
-      if (state.success) {
-        toast.success(state.success)
-      }
-    }, [state])
+    if (state.errors) {
+      state.errors.forEach(error => {
+        toast.error(error)
+      })
+    }
+    if (state.success) {
+      toast.success(state.success)
+    }
+  }, [state])
 
   return (
     <form

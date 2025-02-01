@@ -7,7 +7,7 @@ type ActionStateType ={
   success: string
 }
 
-export async function resetForgotPassword(prevState: ActionStateType, formData: FormData) {
+export async function resetForgotPassword(token: string, prevState: ActionStateType, formData: FormData) {
   const resetPasswordInput = {
     password: formData.get('password'),
     password_confirmation: formData.get('password_confirmation'),

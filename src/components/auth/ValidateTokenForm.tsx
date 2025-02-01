@@ -6,12 +6,14 @@ import { validateToken } from "@/actions/validate-token-action";
 
 type ValidateTokenFormProps = {
   setIsValidToken: Dispatch<SetStateAction<boolean>>
+  token: string
+  setToken: Dispatch<SetStateAction<string>>
 };
 
-export const ValidateTokenForm = ({setIsValidToken}: ValidateTokenFormProps) => {
+export const ValidateTokenForm = ({setIsValidToken, token, setToken}: ValidateTokenFormProps) => {
 
   const [isComplete, setIsComplete] = useState(false)
-  const [token, setToken] = useState('')
+
 
   const validatetWithToken = validateToken.bind(null, token)
   const [state, dispatch] = useActionState(validatetWithToken, {
