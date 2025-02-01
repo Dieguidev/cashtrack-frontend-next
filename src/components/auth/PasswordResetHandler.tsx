@@ -7,9 +7,14 @@ import { ResetPassword } from "./ResetPassword";
 
 export const PasswordResetHandler = () => {
   const [isValidToken, setIsValidToken] = useState(false)
+
+
+
   return (
+
+
     <>
-     {!isValidToken ? <ValidateTokenForm/>: <ResetPassword/>}
+     {!isValidToken ? <ValidateTokenForm setIsValidToken={setIsValidToken}/>: <ResetPassword/>}
     </>
   )
 }
