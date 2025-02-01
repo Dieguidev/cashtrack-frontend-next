@@ -27,9 +27,11 @@ export const SuccessSchema = z.object({
   }),
 });
 
-export const LoginResponseSchema = SuccessSchema.merge(z.object({
-  token: z.string(),
-}));
+export const LoginResponseSchema = SuccessSchema.merge(
+  z.object({
+    token: z.string(),
+  })
+);
 
 export const ErrorResponseSchema = z.object({
   error: z.string(),
@@ -40,6 +42,13 @@ export const TokenSchema = z
   .min(6, { message: 'Token no válido' })
   .max(6, { message: 'Token no válido' });
 
+export const ForgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'El Email es Obligatorio' })
+    .email({ message: 'Email no válido' }),
+});
+
 export const LoginSchema = z.object({
   email: z
     .string()
@@ -47,6 +56,5 @@ export const LoginSchema = z.object({
     .email({ message: 'Email no válido' }),
   password: z.string().min(1, { message: 'El Password no puede ir vacio' }),
 });
-
 
 export type User = z.infer<typeof SuccessSchema>['user'];
