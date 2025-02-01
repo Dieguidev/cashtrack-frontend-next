@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
 import { BudgetsAPIResponseSchema } from "@/schemas";
+import { getTokenFromCookies } from "@/auth/token";
 
 export const metadata: Metadata = {
   title: 'CahsTrackr - Panel de Administración',
@@ -11,8 +12,7 @@ export const metadata: Metadata = {
 }
 
 async function getUserBudgets() {
-  const authCookie = await cookies();
-  const token = authCookie.get('CASHTRACKR_TOKEN')?.value;
+  const token = await getTokenFromCookies();
 
   const url = `${process.env.API_URL}/budget`;
   const req = await fetch(url, {
@@ -30,8 +30,8 @@ async function getUserBudgets() {
 
 export default async function AdminPage() {
 
-  const budgets= await getUserBudgets();
-  // console.log(budgets);
+  const budgets = await getUserBudgets();
+  console.log(budgets);
 
 
   return (
