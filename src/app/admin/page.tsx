@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { BudgetsAPIResponseSchema } from "@/schemas";
 import { getTokenFromCookies } from "@/auth/token";
-import { formatCurrency } from "@/utils";
+import { formatCurrency, formatDate } from "@/utils";
 
 export const metadata: Metadata = {
   title: 'CahsTrackr - Panel de Administración',
@@ -69,7 +69,8 @@ export default async function AdminPage() {
                       {formatCurrency(budget.amount)}
                     </p>
                     <p className='text-gray-500  text-sm'>
-
+                      Ultima actualización {''}
+                      <span className="font-bold">{formatDate(budget.updatedAt)}</span>
                     </p>
                   </div>
                 </div>
