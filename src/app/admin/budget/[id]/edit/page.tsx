@@ -1,4 +1,5 @@
 import { getTokenFromCookies } from "@/auth/token";
+import { EditBudgetForm } from "@/components/budget/EditBudgetForm";
 import { BudgetAPIResponseSchema } from "@/schemas";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -47,7 +48,7 @@ export default async function EditBudgetPage({ params }: { params: { id: string 
         </Link>
       </div>
       <div className='p-10 mt-10  shadow-lg border '>
-
+        <EditBudgetForm />
       </div>
     </>
   );
