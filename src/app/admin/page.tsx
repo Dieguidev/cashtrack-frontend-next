@@ -1,8 +1,14 @@
 
 import Link from "next/link";
 
-export default async function AdminPage() {
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: 'CahsTrackr - Panel de Administración',
+  description: 'Panel de administración de CashTrackr',
+}
+
+export default async function AdminPage() {
 
   return (
     <>
