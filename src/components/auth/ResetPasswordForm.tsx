@@ -1,5 +1,7 @@
 
 import { resetForgotPassword } from '@/actions/reset-forgot-password-action';
+import { useRouter } from 'next/navigation';
+
 import { useActionState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
@@ -9,6 +11,9 @@ type ResetPasswordFormProps = {
 }
 
 export const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
+
+  const router = useRouter()
+
   const resetForgotPasswordWithToken = resetForgotPassword.bind(null, token)
   const [state, dispatch] = useActionState(resetForgotPasswordWithToken, {
     errors: [],
@@ -22,9 +27,16 @@ export const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
       })
     }
     if (state.success) {
-      toast.success(state.success)
+      toast.success(state.success, {
+        onClose: () => {
+          router.push('/auth/login')
+        },
+        onClick: () => {
+          router.push('/auth/login')
+        }
+      })
     }
-  }, [state])
+  }, [state, router])
 
   return (
     <form
