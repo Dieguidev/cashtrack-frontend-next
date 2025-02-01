@@ -1,10 +1,7 @@
 'use server';
 
-import {
-  DraftBudgetSchema,
-  ErrorResponseSchema,
-} from '@/schemas';
-import { cookies } from 'next/headers';
+import { getTokenFromCookies } from '@/auth/token';
+import { DraftBudgetSchema, ErrorResponseSchema } from '@/schemas';
 
 export type ActionStateType = {
   errors: string[];
@@ -26,8 +23,7 @@ export async function createBudget(
     };
   }
 
-  const authCookie = await cookies();
-  const token = authCookie.get('CASHTRACKR_TOKEN')?.value;
+  const token = await getTokenFromCookies();
 
   const url = `${process.env.API_URL}/budget`;
   const req = await fetch(url, {
