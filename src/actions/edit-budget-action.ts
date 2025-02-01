@@ -2,6 +2,7 @@
 
 import { getTokenFromCookies } from '@/auth/token';
 import { Budget, DraftBudgetSchema, ErrorResponseSchema } from '@/schemas';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 export type ActionStateType = {
   errors: string[];
@@ -51,6 +52,20 @@ export async function editBudget(
   }
 
   // SuccessSchema.parse(json);
+
+  // Revalida la página en la ruta '/admin'.
+  // Esto es importante para asegurarse de que cualquier cambio realizado en los datos
+  // se refleje en la página '/admin' la próxima vez que se solicite.
+  // Es útil en aplicaciones donde los datos pueden cambiar frecuentemente y necesitas
+  // que la página muestre la información más reciente.
+  revalidatePath('/admin');
+
+  // Revalida todas las páginas o componentes que están etiquetados con 'all-budgets'.
+  // Esto es importante para asegurarse de que cualquier cambio en los presupuestos
+  // se refleje en todas las partes de la aplicación que dependen de estos datos.
+  // Es útil en aplicaciones donde los datos se comparten entre múltiples componentes
+  // o páginas y necesitas que todos ellos se actualicen cuando los datos cambian.
+  revalidateTag('all-budgets');
 
   return {
     errors: [],
