@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PinInput, PinInputField } from "@chakra-ui/pin-input";
 import { toast } from "react-toastify";
@@ -20,9 +20,15 @@ export const ConfirmAccountFrom = () => {
   })
 
   useEffect(() => {
-    if (isComplete) {
-      dispatch()
-    }
+    // ⚠️ IMPORTANTE: Cuando se utilice useActionState, cualquier llamada a su dispatch  en el cliente
+      // debe envolverarse en startTransition para asegurar que React maneje la actualización
+      // dentro del contexto adecuado. Esto evita errores relacionados con la ejecución
+      // asíncrona fuera de un contexto de acción en Next.js.
+        if (isComplete) {
+          startTransition(() => {
+            dispatch();
+          });
+        }
   }, [isComplete])
 
   useEffect(() => {
