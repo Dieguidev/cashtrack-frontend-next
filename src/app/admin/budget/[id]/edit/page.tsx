@@ -3,6 +3,7 @@ import { EditBudgetForm } from "@/components/budget/EditBudgetForm";
 import { BudgetAPIResponseSchema } from "@/schemas";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { title } from "process";
 
 const getBudget = async (id: string) => {
   const url = `${process.env.API_URL}/budget/${id}`;
@@ -21,8 +22,17 @@ const getBudget = async (id: string) => {
   }
 
   const budget = BudgetAPIResponseSchema.parse(json);
-
   return budget;
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }){
+  const { id } = await params;
+  const budget = await getBudget(id);
+
+  return {
+    title: `${budget.name} - Editar Presupuesto`,
+    description: `Edita el presupuesto ${budget.name}`,
+  }
 }
 
 export default async function EditBudgetPage({ params }: { params: { id: string } }) {
