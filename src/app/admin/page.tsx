@@ -2,13 +2,37 @@
 import Link from "next/link";
 
 import { Metadata } from "next";
+import { cookies } from "next/headers";
+import { BudgetsAPIResponseSchema } from "@/schemas";
 
 export const metadata: Metadata = {
   title: 'CahsTrackr - Panel de Administración',
   description: 'Panel de administración de CashTrackr',
 }
 
+async function getUserBudgets() {
+  const authCookie = await cookies();
+  const token = authCookie.get('CASHTRACKR_TOKEN')?.value;
+
+  const url = `${process.env.API_URL}/budget`;
+  const req = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await req.json();
+  const budgets = BudgetsAPIResponseSchema.parse(json);
+  return budgets;
+
+}
+
 export default async function AdminPage() {
+
+  const budgets= await getUserBudgets();
+  // console.log(budgets);
+
 
   return (
     <>
