@@ -1,3 +1,4 @@
+import { Budget } from "@/schemas"
 
 type BudgetFormProps = {
   formData?: {
@@ -5,9 +6,10 @@ type BudgetFormProps = {
     name: string
   }
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  budget?: Budget
 }
 
-export const BudegetForm = ({ formData, handleChange }: BudgetFormProps) => {
+export const BudegetForm = ({ formData, handleChange, budget }: BudgetFormProps) => {
   return (
     <>
       <div className="space-y-3">
@@ -20,8 +22,10 @@ export const BudegetForm = ({ formData, handleChange }: BudgetFormProps) => {
           type="text"
           placeholder="Nombre del Presupuesto"
           name="name"
+          defaultValue={budget?.name}
           value={formData?.name}
           onChange={handleChange}
+
         />
       </div>
       <div className="space-y-3">
@@ -34,6 +38,7 @@ export const BudegetForm = ({ formData, handleChange }: BudgetFormProps) => {
           className="w-full p-3  border border-gray-100 bg-slate-100"
           placeholder="Cantidad Presupuesto"
           name="amount"
+          defaultValue={budget?.amount}
           value={formData?.amount}
           onChange={handleChange}
         />
