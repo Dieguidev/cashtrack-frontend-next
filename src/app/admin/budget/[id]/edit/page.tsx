@@ -1,31 +1,11 @@
-import { getTokenFromCookies } from "@/auth/token";
+
 import { EditBudgetForm } from "@/components/budget/EditBudgetForm";
-import { BudgetAPIResponseSchema } from "@/schemas";
+
+import { getBudget } from "@/services/budgets";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { cache } from "react";
 
 
-const getBudget = cache( async (id: string) => {
-  const url = `${process.env.API_URL}/budget/${id}`;
-  const token = await getTokenFromCookies();
-  const req = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'force-cache',
-    next: { tags: [`budget-${id}`] }
-  });
 
-  const json = await req.json();
-
-  if (!req.ok) notFound();
-
-  const budget = BudgetAPIResponseSchema.parse(json);
-  return budget;
-})
 
 export async function generateMetadata({ params }: { params: { id: string } }){
   const { id } = await params;
