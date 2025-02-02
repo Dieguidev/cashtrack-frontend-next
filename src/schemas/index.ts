@@ -91,4 +91,9 @@ export const BudgetAPIResponseSchema = z.object({
 
 export const BudgetsAPIResponseSchema = z.array(BudgetAPIResponseSchema);
 
+export const ConfirmPasswordSchema = z.object({
+  password: z.string()
+          .min(8, {message: 'El Password debe ser de al menos 8 caracteres'})
+})
+
 export type Budget = z.infer<typeof BudgetAPIResponseSchema>;
