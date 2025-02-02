@@ -1,6 +1,15 @@
+import { Expense } from "@/schemas"
 
+type ExpenseFormProps = {
+  formData?: {
+    amount: string
+    name: string
+  }
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  expense?: Expense
+}
 
-export const ExpenseForm = () => {
+export const ExpenseForm = ({ formData, handleChange, expense }: ExpenseFormProps) => {
   return (
     <>
       <div className="mb-5">
@@ -13,6 +22,9 @@ export const ExpenseForm = () => {
           type="text"
           placeholder="Nombre del Gasto"
           name="name"
+          defaultValue={expense?.name}
+          value={formData?.name}
+          onChange={handleChange}
         />
       </div>
 
@@ -26,6 +38,9 @@ export const ExpenseForm = () => {
           type="number"
           placeholder="Cantidad Gasto"
           name="amount"
+          defaultValue={expense?.amount}
+          value={formData?.amount}
+          onChange={handleChange}
         />
       </div>
     </>

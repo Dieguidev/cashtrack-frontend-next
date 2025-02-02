@@ -1,6 +1,6 @@
 
 
-export const EditExpenseForm = () => {
+export const EditExpenseForm = ({budgetId}) => {
   return (
     <div>EditExpenseForm</div>
   )

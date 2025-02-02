@@ -11,6 +11,6 @@ export const AddExpenseButton = () => {
       type='button'
       className='bg-amber-500 px-10 py-2 rounded-lg text-white font-bold cursor-pointer'
       onClick={()=> router.push('?addExpense=true&showModal=true')}
-    >Agregar Gastoo</button>
+    >Agregar Gasto</button>
   )
 }

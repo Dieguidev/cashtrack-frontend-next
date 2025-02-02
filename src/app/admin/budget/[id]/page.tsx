@@ -24,7 +24,7 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
         </div>
         <AddExpenseButton />
       </div>
-      <ModalContainer />
+      <ModalContainer budgetId={id}/>
     </>
   );
 }
