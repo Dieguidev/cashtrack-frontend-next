@@ -1,33 +1,9 @@
-import { getTokenFromCookies } from "@/auth/token";
-import { EditBudgetForm } from "@/components/budget/EditBudgetForm";
-import { BudgetAPIResponseSchema } from "@/schemas";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { cache } from "react";
+import { EditBudgetForm } from "@/components/budget/EditBudgetForm";
+import { getBudget } from "@/services/budgets";
 
-
-const getBudget = cache( async (id: string) => {
-  const url = `${process.env.API_URL}/budget/${id}`;
-  const token = await getTokenFromCookies();
-  const req = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'force-cache',
-    next: { tags: [`budget-${id}`] }
-  });
-
-  const json = await req.json();
-
-  if (!req.ok) notFound();
-
-  const budget = BudgetAPIResponseSchema.parse(json);
-  return budget;
-})
-
-export async function generateMetadata({ params }: { params: { id: string } }){
+export async function generateMetadata({ params }: { params: { id: string } }) {
   const { id } = await params;
   const budget = await getBudget(id);
 
@@ -60,7 +36,7 @@ export default async function EditBudgetPage({ params }: { params: { id: string 
         </Link>
       </div>
       <div className='p-10 mt-10  shadow-lg border '>
-        <EditBudgetForm budget={budget}/>
+        <EditBudgetForm budget={budget} />
       </div>
     </>
   );
