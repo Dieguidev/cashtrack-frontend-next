@@ -78,7 +78,13 @@ export const DraftBudgetSchema = z.object({
           .min(1, {message: 'Cantidad no válida'}),
 })
 
-
+export const ExpenseAPIResponseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  amount: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+})
 
 export const BudgetAPIResponseSchema = z.object({
   id: z.string(),
@@ -87,7 +93,7 @@ export const BudgetAPIResponseSchema = z.object({
   userId: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  expenses: z.array(z.unknown()),
+  expenses: z.array(ExpenseAPIResponseSchema),
 })
 
 export const BudgetsAPIResponseSchema = z.array(BudgetAPIResponseSchema);
@@ -107,13 +113,6 @@ export const DraftExpenseSchema = z.object({
           .min(1, {message: 'Cantidad no válida'}),
 })
 
-export const ExpenseAPIResponseSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  amount: z.number(),
-  userId: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-})
+
 
 export type Expense = z.infer<typeof ExpenseAPIResponseSchema>;
