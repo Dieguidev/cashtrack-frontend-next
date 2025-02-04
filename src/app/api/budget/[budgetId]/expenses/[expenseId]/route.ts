@@ -7,9 +7,11 @@ export async function GET(
 ) {
   await verifySession();
 
-  const token = getTokenFromCookies();
+  const { budgetId, expenseId } = await params;
 
-  const url = `${process.env.API_URL}/expense/${params.expenseId}/budget/${params.budgetId}`;
+  const token = await getTokenFromCookies();
+
+  const url = `${process.env.API_URL}/expense/${expenseId}/budget/${budgetId}`;
   const req = await fetch(url, {
     method: 'GET',
     headers: {
@@ -20,8 +22,8 @@ export async function GET(
 
   const json = await req.json();
 
-  if(!req.ok){
-    return Response.json(json.errors, { status: req.status });
+  if (!req.ok) {
+    return Response.json({ error: 'No se pudo obtener el gasto' });
   }
 
   return Response.json(json);

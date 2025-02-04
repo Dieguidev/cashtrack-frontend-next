@@ -1,11 +1,30 @@
 import { DialogTitle } from "@headlessui/react";
 import { ExpenseForm } from "./ExpenseForm";
+import { useEffect } from "react";
+import { useParams, useSearchParams } from 'next/navigation';
 
 type EditExpenseFormProps = {
   closeModal: () => void
 }
 
 export const EditExpenseForm = ({ closeModal }: EditExpenseFormProps) => {
+
+  const {id} = useParams()
+  const searchParams = useSearchParams()
+  const expenseId= searchParams.get('editExpenseId');
+
+
+
+  useEffect(() => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/budget/${id}/expenses/${expenseId}`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
+  }, [id, expenseId])
+
+
   return (
     <>
       <DialogTitle
