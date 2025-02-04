@@ -18,6 +18,10 @@ export async function GET(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    cache:'force-cache',
+    next: {
+      tags: [`expense-${expenseId}`],
+    }
   });
 
   const json = await req.json();

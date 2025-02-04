@@ -1,9 +1,10 @@
 import { DialogTitle } from "@headlessui/react";
 import { ExpenseForm } from "./ExpenseForm";
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useParams, useSearchParams } from 'next/navigation';
 import { Expense } from '../../schemas/index';
-import { set } from "zod";
+import { editExpense } from "@/actions/edit-expense-action";
+import { toast } from "react-toastify";
 
 type EditExpenseFormProps = {
   closeModal: () => void
@@ -11,21 +12,36 @@ type EditExpenseFormProps = {
 
 export const EditExpenseForm = ({ closeModal }: EditExpenseFormProps) => {
   const [expense, setExpense] = useState<Expense>()
-  const {id} = useParams()
+  const { id: budgetId } = useParams<{id: string}>()
   const searchParams = useSearchParams()
-  const expenseId= searchParams.get('editExpenseId');
-
-
+  const expenseId = searchParams.get('editExpenseId')!;
 
   useEffect(() => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/budget/${id}/expenses/${expenseId}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/budget/${budgetId}/expenses/${expenseId}`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
         setExpense(data)
       })
-  }, [id, expenseId])
+  }, [budgetId, expenseId])
 
+  const editExpenseWithIdAndBudgetId = editExpense.bind(null, { budgetId: budgetId, expenseId })
+  const [state, dispatch] = useActionState(editExpenseWithIdAndBudgetId, {
+    errors: [],
+    success: '',
+  })
+
+  useEffect(() => {
+    if (state.errors) {
+      state.errors.forEach(error => {
+        toast.error(error)
+      })
+    }
+    if (state.success) {
+      toast.success(state.success)
+      closeModal();
+    }
+  }, [state, closeModal])
 
   return (
     <>
@@ -39,10 +55,11 @@ export const EditExpenseForm = ({ closeModal }: EditExpenseFormProps) => {
         <span className="text-amber-500">gasto</span>
       </p>
       <form
+        action={dispatch}
         className="bg-gray-100 shadow-lg rounded-lg p-10 mt-10 border"
         noValidate
       >
-        <ExpenseForm expense={expense}/>
+        <ExpenseForm expense={expense} />
 
         <input
           type="submit"
