@@ -2,6 +2,7 @@
 
 import { getTokenFromCookies } from '@/auth/token';
 import { Budget, DraftExpenseSchema, ErrorResponseSchema } from '@/schemas';
+import { revalidateTag } from 'next/cache';
 
 export type ActionStateType = {
   errors: string[];
@@ -53,6 +54,7 @@ export async function createExpense(
   // SuccessSchema.parse(json);
 
   // revalidateTag('all-budgets');
+  revalidateTag(`budget-${budgetId}`);
 
   return {
     errors: [],
