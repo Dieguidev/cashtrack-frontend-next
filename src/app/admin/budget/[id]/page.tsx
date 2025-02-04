@@ -1,4 +1,5 @@
 import { AddExpenseButton } from "@/components/expenses/AddExpenseButton";
+import { ExpenseMenu } from "@/components/expenses/ExpenseMenu";
 import { ModalContainer } from "@/components/ui/ModalContainer";
 import { getBudget } from "@/services/budgets";
 import { formatCurrency, formatDate } from "@/utils";
@@ -30,7 +31,7 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
       {budget.expenses.length ? (
         <>
         <h1 className="font-black text-4xl text-purple-950 mt-10">
-          Gastos en este presupuesto
+          Gastos en este presupuesto.
         </h1>
           <ul role="list" className="divide-y divide-gray-300 border shadow-lg mt-10 ">
             {budget.expenses.map((expense) => (
@@ -49,6 +50,7 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
                     </p>
                   </div>
                 </div>
+                <ExpenseMenu expenseId={expense.id}/>
               </li>
             ))}
           </ul>
