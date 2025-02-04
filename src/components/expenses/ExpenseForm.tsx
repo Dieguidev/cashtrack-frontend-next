@@ -10,6 +10,8 @@ type ExpenseFormProps = {
 }
 
 export const ExpenseForm = ({ formData, handleChange, expense }: ExpenseFormProps) => {
+
+
   return (
     <>
       <div className="mb-5">

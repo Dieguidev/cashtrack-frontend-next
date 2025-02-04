@@ -1,14 +1,16 @@
 import { DialogTitle } from "@headlessui/react";
 import { ExpenseForm } from "./ExpenseForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from 'next/navigation';
+import { Expense } from '../../schemas/index';
+import { set } from "zod";
 
 type EditExpenseFormProps = {
   closeModal: () => void
 }
 
 export const EditExpenseForm = ({ closeModal }: EditExpenseFormProps) => {
-
+  const [expense, setExpense] = useState<Expense>()
   const {id} = useParams()
   const searchParams = useSearchParams()
   const expenseId= searchParams.get('editExpenseId');
@@ -20,7 +22,7 @@ export const EditExpenseForm = ({ closeModal }: EditExpenseFormProps) => {
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        setExpense(data)
       })
   }, [id, expenseId])
 
@@ -40,7 +42,7 @@ export const EditExpenseForm = ({ closeModal }: EditExpenseFormProps) => {
         className="bg-gray-100 shadow-lg rounded-lg p-10 mt-10 border"
         noValidate
       >
-        <ExpenseForm />
+        <ExpenseForm expense={expense}/>
 
         <input
           type="submit"
