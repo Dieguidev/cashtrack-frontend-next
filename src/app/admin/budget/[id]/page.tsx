@@ -19,6 +19,7 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
   const budget = await getBudget(id);
 
   const totalExpenses = budget.expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  const totalAvailable = budget.amount - totalExpenses;
 
 
   return (
@@ -37,7 +38,7 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
             <div>Gráfica aquí</div>
             <div className="flex flex-col justify-center items-center md:items-start gap-5">
               <Amount label='Presupuesto' amount={budget.amount}/>
-              <Amount label='Disponible' amount={budget.amount-totalExpenses}/>
+              <Amount label='Disponible' amount={totalAvailable}/>
               <Amount label='Gastado' amount={totalExpenses}/>
 
             </div>
