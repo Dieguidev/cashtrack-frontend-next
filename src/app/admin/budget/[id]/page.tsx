@@ -1,8 +1,11 @@
+
 import { AddExpenseButton } from "@/components/expenses/AddExpenseButton";
 import { ExpenseMenu } from "@/components/expenses/ExpenseMenu";
 import { ModalContainer } from "@/components/ui/ModalContainer";
 import { getBudget } from "@/services/budgets";
 import { formatCurrency, formatDate } from "@/utils";
+import { Amount } from '../../../../components/ui/Amount';
+import { CircularProgress } from "@/components/budget/CircularProgress";
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -17,6 +20,11 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
   const { id } = await params;
   const budget = await getBudget(id);
 
+  const totalExpenses = budget.expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  const totalAvailable = budget.amount - totalExpenses;
+
+  const percentageSpent =Math.round( (totalExpenses / budget.amount) * 100);
+
 
   return (
     <>
@@ -30,9 +38,20 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
 
       {budget.expenses.length ? (
         <>
-        <h1 className="font-black text-4xl text-purple-950 mt-10">
-          Gastos en este presupuesto.
-        </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 mt-10">
+            <div className="flex justify-center items-center mb-10">
+              <CircularProgress value={percentageSpent}/>
+            </div>
+            <div className="flex flex-col justify-center items-center md:items-start gap-5">
+              <Amount label='Presupuesto' amount={budget.amount}/>
+              <Amount label='Disponible' amount={totalAvailable}/>
+              <Amount label='Gastado' amount={totalExpenses}/>
+
+            </div>
+          </div>
+          <h1 className="font-black text-4xl text-purple-950 mt-10">
+            Gastos en este presupuesto.
+          </h1>
           <ul role="list" className="divide-y divide-gray-300 border shadow-lg mt-10 ">
             {budget.expenses.map((expense) => (
               <li key={expense.id} className="flex justify-between gap-x-6 p-5">
@@ -50,7 +69,7 @@ export default async function BudgetDetailsPage({ params }: { params: { id: stri
                     </p>
                   </div>
                 </div>
-                <ExpenseMenu expenseId={expense.id}/>
+                <ExpenseMenu expenseId={expense.id} />
               </li>
             ))}
           </ul>
