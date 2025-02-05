@@ -39,14 +39,8 @@ export const CreateBudgetForm = () => {
       })
     }
     if (state.success) {
-      toast.success(state.success, {
-        onClose: () => {
-          router.push('/admin')
-        },
-        onClick: () => {
-          router.push('/admin')
-        }
-      })
+      toast.success(state.success)
+      router.push('/admin')
     }
   }, [state, router])
 
