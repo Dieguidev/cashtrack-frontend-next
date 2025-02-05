@@ -70,6 +70,17 @@ export const ResetPasswordSchema = z.object({
 });
 
 
+export const UpdatePasswordSchema = z.object({
+  current_password: z.string().min(8, {message: 'El Password debe ser de al menos 8 caracteres'}),
+  password: z.string()
+          .min(8, {message: 'El Nuevo Password debe ser de al menos 8 caracteres'}),
+  password_confirmation: z.string()
+}).refine((data) => data.password === data.password_confirmation, {
+  message: "Los Passwords no son iguales",
+  path: ["password_confirmation"]
+});
+
+
 export const DraftBudgetSchema = z.object({
   name: z.string()
           .min(1, {message: 'El Nombre del presupuesto es obligatorio'}),

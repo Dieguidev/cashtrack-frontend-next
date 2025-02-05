@@ -1,3 +1,5 @@
+import { ChangePassword } from "@/components/profile/ChangePassword";
+
 export default function ChangePasswordPage() {
   return (
     <>
@@ -5,6 +7,8 @@ export default function ChangePasswordPage() {
       <p className="text-xl font-bold">Aquí puedes cambiar tu {''}
         <span className="text-amber-500">password</span>
       </p>
+
+      <ChangePassword />
     </>
   )
 }
