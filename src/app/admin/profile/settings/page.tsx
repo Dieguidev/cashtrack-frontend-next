@@ -1,6 +1,8 @@
+import { verifySession } from "@/auth/dal";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 
-export default function EditProfilePage() {
+export default async function EditProfilePage() {
+  const { user } = await verifySession();
   return (
     <>
         <h1 className="font-black text-4xl text-purple-950 my-5">Actualizar Perfil</h1>
@@ -8,7 +10,7 @@ export default function EditProfilePage() {
             <span className="text-amber-500">perfil</span>
         </p>
 
-        <ProfileForm />
+        <ProfileForm user={user}/>
     </>
 
   )

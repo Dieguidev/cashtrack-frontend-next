@@ -1,11 +1,38 @@
 "use client"
 
-export const ProfileForm = () => {
+import { updateUser } from "@/actions/update-user-action"
+import { User } from "@/schemas"
+import { useActionState, useEffect } from "react"
+import { toast } from "react-toastify"
+
+type ProfileFormProps = {
+  user: User
+}
+
+export const ProfileForm = ({user}: ProfileFormProps) => {
+
+  const [state, dispatch] = useActionState(updateUser, {
+      errors: [],
+      success: ''
+    })
+
+    useEffect(() => {
+      if (state?.errors) {
+        state.errors.forEach(error => {
+          toast.error(error)
+        })
+      }
+      if (state?.success) {
+        toast.success(state.success)
+      }
+    }, [state])
+
   return (
     <>
       <form
         className=" mt-14 space-y-5"
         noValidate
+        action={dispatch}
       >
         <div className="flex flex-col gap-5">
           <label
@@ -16,6 +43,7 @@ export const ProfileForm = () => {
             placeholder="Tu Nombre"
             className="w-full border border-gray-300 p-3 rounded-lg"
             name="name"
+            defaultValue={user.name}
           />
         </div>
         <div className="flex flex-col gap-5">
@@ -29,6 +57,7 @@ export const ProfileForm = () => {
             placeholder="Tu Email"
             className="w-full border border-gray-300 p-3 rounded-lg"
             name="email"
+            defaultValue={user.email}
           />
         </div>
 
