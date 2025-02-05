@@ -19,6 +19,7 @@ export const verifySession = cache(async () => {
       Authorization: `Bearer ${token}`,
     },
     cache: "force-cache",
+    next: { tags: [`user`] }
   });
 
   const session = await req.json();

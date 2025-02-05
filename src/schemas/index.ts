@@ -124,6 +124,13 @@ export const DraftExpenseSchema = z.object({
           .min(1, {message: 'Cantidad no válida'}),
 })
 
+export const UpdateUserSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'El Email es Obligatorio' })
+    .email({ message: 'Email no válido' }),
+  name: z.string().min(1, { message: 'El Nombre no puede ir vacio' }),
+});
 
 
 export type Expense = z.infer<typeof ExpenseAPIResponseSchema>;
